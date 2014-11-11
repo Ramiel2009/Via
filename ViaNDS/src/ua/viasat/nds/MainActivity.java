@@ -1,40 +1,130 @@
 package ua.viasat.nds;
 
-import java.util.Arrays;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener{
-	Button btn1;
-	EditText et1;
-	TextView tv1;
-	TextView tv2;
+public class MainActivity extends Activity {
+	private static String SOAP_ACTION1 = "http://tempuri.org/FahrenheitToCelsius";
+    private static String SOAP_ACTION2 = "http://tempuri.org/CelsiusToFahrenheit";
+    private static String NAMESPACE = "http://tempuri.org/";
+    private static String METHOD_NAME1 = "FahrenheitToCelsius";
+    private static String METHOD_NAME2 = "CelsiusToFahrenheit";
+    private static String URL = "http://www.w3schools.com/webservices/tempconvert.asmx?WSDL";
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-		
-		TextView tv1 = (TextView)findViewById (R.id.tv1);
-		Button btn1 = (Button)findViewById (R.id.button1);
-		EditText et1 = (EditText)findViewById (R.id.editText1);
-		btn1.setOnClickListener(this);
-		TextView tv2 = (TextView)findViewById(R.id.textView1);
-	}
-	
-	@Override
-	public void onClick (View v){
-		switch (v.getId()){
-		case R.id.button1:
-			String text  = et1.getText().toString();
-			tv1.setText(text);
-			break;
-		}
-	}
+    Button btnFar,btnCel,btnClear;
+    EditText txtFar,txtCel;
+   
+  @Override
+  public void onCreate(Bundle savedInstanceState)
+  {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.main);
+     
+      btnFar = (Button)findViewById(R.id.btnFar);
+      btnCel = (Button)findViewById(R.id.btnCel);
+      btnClear = (Button)findViewById(R.id.btnClear);
+      txtFar = (EditText)findViewById(R.id.txtFar);
+      txtCel = (EditText)findViewById(R.id.txtCel);
+     
+      btnFar.setOnClickListener(new View.OnClickListener()
+      {
+                @Override
+                public void onClick(View v)
+                {
+                      //Initialize soap request + add parameters
+                SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME1);       
+               
+                //Use this to add parameters
+                request.addProperty("Fahrenheit",txtFar.getText().toString());
+               
+                //Declare the version of the SOAP request
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+               
+                envelope.setOutputSoapObject(request);
+                envelope.dotNet = true;
+               
+                try {
+                      HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+                     
+                      //this is the actual part that will call the webservice
+                      androidHttpTransport.call(SOAP_ACTION1, envelope);
+                     
+                      // Get the SoapResult from the envelope body.
+                      SoapObject result = (SoapObject)envelope.bodyIn;
+
+                      if(result != null)
+                      {
+                            //Get the first property and change the label text
+                            txtCel.setText(result.getProperty(0).toString());
+                      }
+                      else
+                      {
+                            Toast.makeText(getApplicationContext(), "No Response",Toast.LENGTH_LONG).show();
+                      }
+                } catch (Exception e) {
+                      e.printStackTrace();
+                }
+                }
+          });
+     
+      btnCel.setOnClickListener(new View.OnClickListener()
+      {
+                @Override
+                public void onClick(View v)
+                {
+                      //Initialize soap request + add parameters
+                SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME2);       
+               
+                //Use this to add parameters
+                request.addProperty("Celsius",txtCel.getText().toString());
+               
+                //Declare the version of the SOAP request
+                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+               
+                envelope.setOutputSoapObject(request);
+                envelope.dotNet = true;
+               
+                try {
+                      HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+                     
+                      //this is the actual part that will call the webservice
+                      androidHttpTransport.call(SOAP_ACTION2, envelope);
+                     
+                      // Get the SoapResult from the envelope body.
+                      SoapObject result = (SoapObject)envelope.bodyIn;
+
+                      if(result != null)
+                      {
+                            //Get the first property and change the label text
+                            txtFar.setText(result.getProperty(0).toString());
+                      }
+                      else
+                      {
+                            Toast.makeText(getApplicationContext(), "No Response",Toast.LENGTH_LONG).show();
+                      }
+                } catch (Exception e) {
+                      e.printStackTrace();
+                }
+                }
+          });
+     
+      btnClear.setOnClickListener(new View.OnClickListener()
+      {
+                @Override
+                public void onClick(View v)
+                {
+                      txtCel.setText("");
+                      txtFar.setText("");
+                }
+          });
+  }
 }
