@@ -1,8 +1,10 @@
 package ua.viasat.guide;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Synopsis extends Activity{
 	@Override
@@ -10,8 +12,25 @@ public class Synopsis extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.synopsis);
 		TextView sname = (TextView)findViewById(R.id.sname);
-		TextView stitle = (TextView)findViewById(R.id.ssyn);
-		String title = MainActivity.name;
-		sname.setText(title);	
+		sname.setTypeface(null, Typeface.BOLD);
+		TextView ssynopsis = (TextView)findViewById(R.id.ssyn);
+		//sname.setText(MainActivity.name);	
+		sname.setText("");
+		MainActivity.desc.replaceAll("\\bСмотреть на Viaplay!\\b", "");
+		//ssynopsis.setText(MainActivity.desc);
+		ssynopsis.setText("");
+		switch (MainActivity.clicked){
+		case 1:
+			//sname.setText(MainActivity.st[3]);
+			Toast.makeText(this, MainActivity.clicked, Toast.LENGTH_SHORT);
+			break;
+		case 2:
+			Toast.makeText(this, MainActivity.clicked, Toast.LENGTH_SHORT);
+			//sname.setText(MainActivity.st[MainActivity.clicked]);
+			break;
+		case 3:
+			Toast.makeText(this, MainActivity.clicked, Toast.LENGTH_SHORT);
+			break;
+		}
 	}
 }

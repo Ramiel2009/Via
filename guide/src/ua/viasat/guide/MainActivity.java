@@ -7,7 +7,7 @@ import org.jsoup.select.Elements;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.graphics.Typeface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -26,17 +26,20 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static String desc;
 	public static String ltime;
 	public static String lchannel;
+	public static String contUrl="http://ru.viasat.ua/";
 	ProgressDialog pd;
 	public static String title;
 	TextView tv1;
 	TextView tv2;
-	String contUrl = "http://ru.viasat.ua/contents";
-	public static int i; //titles counter
+	TextView tvd;
+	String Url = "http://ru.viasat.ua/contents";
+	public static int i; // titles counter
 	public static Element tname;
 	public static Document doc;
-	public static String[] st = new String[150]; //array for titles name
-	public static String[] time = new String[150]; //array for titles time
-	public static String[] channel = new String[150]; //array for titles channel
+	public static String[] st = new String[150]; // array for titles name
+	public static String[] time = new String[150]; // array for time
+	public static String[] channel = new String[150]; // array for channel
+	public static int clicked; //get clicked title id
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +54,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		Button btn2 = (Button) findViewById(R.id.btn2);
 		btn1.setVisibility(View.GONE);
 		btn2.setOnClickListener(this);
-	//	tv2.setOnClickListener(this);
+		// tv2.setOnClickListener(this);
 		Context dRequest = new Context();
+		
+		
 		dRequest.execute();
 		Stringg();
+		
 	}
 
 	public void Stringg() {
@@ -65,35 +71,48 @@ public class MainActivity extends Activity implements OnClickListener {
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			TextView tvd = new TextView(this);
 			tvd.setId(a);
+			tvd.setOnClickListener(this);
 			params.addRule(RelativeLayout.BELOW, tvd.getId() - 1);
 			rl.addView(tvd, params);
 			// tvd.setTypeface(null, Typeface.BOLD);
 
 			// tvd.setTextSize(16);
 			tvd.setText(Html.fromHtml("<b>" + st[i - a] + "</b>" + "<br>"
-					+ time[i - a] + "   " + "<font color=\"grey\">" + channel[i - a] + "</font>" + "<br>"));
+					+ time[i - a] + "   " + "<font color=\"grey\">"
+					+ channel[i - a] + "</font>" + "<br>"));
 		}
 	}
 
 	@Override
 	public void onClick(View v) {
+		Intent synIntent = new Intent (this, Synopsis.class);
+		Integer.toString(i);
 		switch (v.getId()) {
 		case R.id.btn2:
 			Context dRequest = new Context();
 			dRequest.execute();
 			break;
-
-		/*case R.id.btn1:
-			TextView tv2 = (TextView) findViewById(R.id.tv2);
-				// Intent intent = new Intent(this, Synopsis.class);
-				// startActivity(intent);
-				TextView tv1 = (TextView) findViewById(R.id.tv1);
-				tv1.setText("");
-				tv2.setText("");
-			break;*/
+		case 1:
+			System.out.println("1");
+			clicked = 0;
+			startActivity(synIntent);
+			
+			break;
+		case 2:
+			System.out.println("2");
+			clicked = 1;
+			startActivity(synIntent);
+			
+			break;
+		case 3:
+			System.out.println("3");
+			clicked = 2;
+			startActivity(synIntent);
+			break;
 		default:
 			Toast.makeText(this, "false", Toast.LENGTH_LONG).show();
 		}
+		
 	}
 
 	private class Context extends AsyncTask<Void, Void, Void> {
@@ -108,7 +127,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		public Void doInBackground(Void... params) {
 			try {
-				Document doc = Jsoup.connect(contUrl).timeout(60000).get();
+				Document doc = Jsoup.connect(Url).timeout(60000).get();
 				// Get first title name
 				Element tName = doc.select("a.title").first();
 				name = tName.text();
@@ -144,12 +163,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		@Override
 		public void onPostExecute(Void result) {
 			pd.dismiss();
-			/*TextView tv1 = (TextView) findViewById(R.id.tv1);
-			tv1.setTypeface(null, Typeface.BOLD);
-			tv1.setTextSize(20);
-			tv1.setText(name);
-			TextView tv2 = (TextView) findViewById(R.id.tv2);
-			tv2.setText(desc);*/
 			Stringg();
 
 		}
