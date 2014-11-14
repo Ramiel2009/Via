@@ -1,7 +1,5 @@
 package ua.viasat.guide;
 
-import java.util.Arrays;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,8 +7,6 @@ import org.jsoup.select.Elements;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,13 +27,11 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static String title;
 	TextView tv1;
 	TextView tv2;
-	TextView tvt;
 	String contUrl = "http://viasat.ua/contents";
 	public static int i;
 	public static String[] st;
 	public static String tt = "";
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,8 +45,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		Button btn2 = (Button) findViewById(R.id.btn2);
 		btn2.setOnClickListener(this);
 		tv2.setOnClickListener(this);
-		TextView tvt = (TextView) findViewById(R.id.tvt);
-		tvt.setText("");
 	}
 
 	@Override
@@ -69,10 +61,10 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (tv2.getText().equals("Synopsis")) {
 				Toast.makeText(this, "Alert", Toast.LENGTH_LONG).show();
 				Stringg();
-				
+
 			} else {
-			//	Intent intent = new Intent(this, Synopsis.class);
-			//	startActivity(intent);
+				// Intent intent = new Intent(this, Synopsis.class);
+				// startActivity(intent);
 				Stringg();
 			}
 			break;
@@ -93,26 +85,27 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		protected Void doInBackground(Void... params) {
 			try {
-				Document doc = Jsoup.connect(contUrl).timeout(60000).get();// Get first title name
+				Document doc = Jsoup.connect(contUrl).timeout(60000).get();
+				// Get first title name
 				Element tName = doc.select("a.title").first();
 				name = tName.text();
-				Element description = doc.select("div.text").first();// Get first title description
+				// Get first title synopsis
+				Element description = doc.select("div.text").first();
 				desc = description.text();
 				Elements links = doc.select("a[href]");
 				for (Element link : links) {
 					if (link.attr("href").contains("contents/")) {
 						i++;
 						System.out.println("\n" + link.attr("href"));
-					}	
+					}
 				}
 				i = i / 2;
-				for(int n=0; n!=i; n++){
+				for (int n = 0; n != i; n++) {
 					Element tt = doc.select("a.title").get(n);
 					System.out.println(tt);
-					st[n]=tt.toString();
-				}	
-			} 
-			catch (Exception e) {
+					st[n] = tt.toString();
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return null;
@@ -135,7 +128,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		System.out.println(i);
 		TextView tv2 = (TextView) findViewById(R.id.tv2);
 		tv2.setText("");
-		TextView tv1 = (TextView)findViewById(R.id.tv1);
+		TextView tv1 = (TextView) findViewById(R.id.tv1);
 		tv1.setText("");
 		for (int a = i; a > 0; a--) {
 			RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
@@ -144,10 +137,10 @@ public class MainActivity extends Activity implements OnClickListener {
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			TextView tvd = new TextView(this);
 			tvd.setId(i);
-				params.addRule(RelativeLayout.BELOW, tvd.getId() - 1);
+			params.addRule(RelativeLayout.BELOW, tvd.getId() - 1);
 			i--;
 			rl.addView(tvd, params);
-			tvd.setText(""+Arrays.st[5]);
+			tvd.setText("test");
 		}
 	}
 }
