@@ -21,6 +21,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements OnClickListener {
 
 	public static String name;
+	public static String lname;
 	public static String desc;
 	public static String fulldesc;
 	ProgressDialog pd;
@@ -29,8 +30,9 @@ public class MainActivity extends Activity implements OnClickListener {
 	TextView tv2;
 	String contUrl = "http://viasat.ua/contents";
 	public static int i;
-	public static String[] st;
-	public static String tt = "";
+	public static Element tname;
+	public static Document doc;
+	public static String[] st = new String[150];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,22 @@ public class MainActivity extends Activity implements OnClickListener {
 		Button btn2 = (Button) findViewById(R.id.btn2);
 		btn2.setOnClickListener(this);
 		tv2.setOnClickListener(this);
+		Context dRequest = new Context();
+		dRequest.execute();
+	}
+
+	public void Stringg() {
+		for (int a = i; a > 0; a--) {
+			RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+					ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+			TextView tvd = new TextView(this);
+			tvd.setId(a);
+			params.addRule(RelativeLayout.BELOW, tvd.getId() - 1);
+			rl.addView(tvd, params);
+			tvd.setText(st[i - a]);
+		}
 	}
 
 	@Override
@@ -58,13 +76,15 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		case R.id.btn1:
 			TextView tv2 = (TextView) findViewById(R.id.tv2);
+
 			if (tv2.getText().equals("Synopsis")) {
 				Toast.makeText(this, "Alert", Toast.LENGTH_LONG).show();
-				Stringg();
-
 			} else {
 				// Intent intent = new Intent(this, Synopsis.class);
 				// startActivity(intent);
+				TextView tv1 = (TextView) findViewById(R.id.tv1);
+				tv1.setText("");
+				tv2.setText("");
 				Stringg();
 			}
 			break;
@@ -76,14 +96,14 @@ public class MainActivity extends Activity implements OnClickListener {
 	private class Context extends AsyncTask<Void, Void, Void> {
 
 		@Override
-		protected void onPreExecute() {
+		public void onPreExecute() {
 			pd = new ProgressDialog(MainActivity.this);
 			pd.setTitle("First Title");
 			pd.setMessage("Loading...");
 			pd.show();
 		}
 
-		protected Void doInBackground(Void... params) {
+		public Void doInBackground(Void... params) {
 			try {
 				Document doc = Jsoup.connect(contUrl).timeout(60000).get();
 				// Get first title name
@@ -96,14 +116,14 @@ public class MainActivity extends Activity implements OnClickListener {
 				for (Element link : links) {
 					if (link.attr("href").contains("contents/")) {
 						i++;
-						System.out.println("\n" + link.attr("href"));
 					}
 				}
 				i = i / 2;
-				for (int n = 0; n != i; n++) {
-					Element tt = doc.select("a.title").get(n);
-					System.out.println(tt);
-					st[n] = tt.toString();
+
+				for (int a = i; a > 0; a--) {
+					Element tnames = doc.select("a.title").get(i - a);
+					lname = tnames.text();
+					st[i - a] = lname;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -112,7 +132,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 
 		@Override
-		protected void onPostExecute(Void result) {
+		public void onPostExecute(Void result) {
 			pd.dismiss();
 			TextView tv1 = (TextView) findViewById(R.id.tv1);
 			tv1.setTypeface(null, Typeface.BOLD);
@@ -120,27 +140,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			tv1.setText(name);
 			TextView tv2 = (TextView) findViewById(R.id.tv2);
 			tv2.setText(desc);
-			System.out.println(i);
-		}
-	}
-
-	public void Stringg() {
-		System.out.println(i);
-		TextView tv2 = (TextView) findViewById(R.id.tv2);
-		tv2.setText("");
-		TextView tv1 = (TextView) findViewById(R.id.tv1);
-		tv1.setText("");
-		for (int a = i; a > 0; a--) {
-			RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			TextView tvd = new TextView(this);
-			tvd.setId(i);
-			params.addRule(RelativeLayout.BELOW, tvd.getId() - 1);
-			i--;
-			rl.addView(tvd, params);
-			tvd.setText("test");
 		}
 	}
 }

@@ -38,25 +38,8 @@
                 android:onClick="onClick"
                 android:text="" />
 
-            <TextView
-                android:id="@+id/tvt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:text="TextView" />
-
         </RelativeLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/btn1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btn2"
-        android:layout_alignBottom="@+id/btn2"
-        android:layout_centerHorizontal="true"
-        android:text="Get Title" />
 
     <Button
         android:id="@+id/btn2"
@@ -65,5 +48,14 @@
         android:layout_alignLeft="@+id/scrollView1"
         android:layout_alignParentBottom="true"
         android:text="Get Desc" />
+
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/scrollView1"
+        android:layout_marginRight="23dp"
+        android:text="Get Titles List" />
 
 </RelativeLayout>
