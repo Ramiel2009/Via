@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -23,32 +24,37 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static String name;
 	public static String lname;
 	public static String desc;
-	public static String fulldesc;
+	public static String ltime;
+	public static String lchannel;
 	ProgressDialog pd;
 	public static String title;
 	TextView tv1;
 	TextView tv2;
-	String contUrl = "http://viasat.ua/contents";
-	public static int i;
+	String contUrl = "http://ru.viasat.ua/contents";
+	public static int i; //titles counter
 	public static Element tname;
 	public static Document doc;
-	public static String[] st = new String[150];
+	public static String[] st = new String[150]; //array for titles name
+	public static String[] time = new String[150]; //array for titles time
+	public static String[] channel = new String[150]; //array for titles channel
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		TextView tv1 = (TextView) findViewById(R.id.tv1);
-		tv1.setText("Title");
+		tv1.setText("");
 		TextView tv2 = (TextView) findViewById(R.id.tv2);
-		tv2.setText("Synopsis");
+		tv2.setText("");
 		Button btn1 = (Button) findViewById(R.id.btn1);
 		btn1.setOnClickListener(this);
 		Button btn2 = (Button) findViewById(R.id.btn2);
+		btn1.setVisibility(View.GONE);
 		btn2.setOnClickListener(this);
-		tv2.setOnClickListener(this);
+	//	tv2.setOnClickListener(this);
 		Context dRequest = new Context();
 		dRequest.execute();
+		Stringg();
 	}
 
 	public void Stringg() {
@@ -61,7 +67,11 @@ public class MainActivity extends Activity implements OnClickListener {
 			tvd.setId(a);
 			params.addRule(RelativeLayout.BELOW, tvd.getId() - 1);
 			rl.addView(tvd, params);
-			tvd.setText(st[i - a]);
+			// tvd.setTypeface(null, Typeface.BOLD);
+
+			// tvd.setTextSize(16);
+			tvd.setText(Html.fromHtml("<b>" + st[i - a] + "</b>" + "<br>"
+					+ time[i - a] + "   " + "<font color=\"grey\">" + channel[i - a] + "</font>" + "<br>"));
 		}
 	}
 
@@ -71,23 +81,16 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.btn2:
 			Context dRequest = new Context();
 			dRequest.execute();
-			Toast.makeText(this, "in development", Toast.LENGTH_SHORT);
 			break;
 
-		case R.id.btn1:
+		/*case R.id.btn1:
 			TextView tv2 = (TextView) findViewById(R.id.tv2);
-
-			if (tv2.getText().equals("Synopsis")) {
-				Toast.makeText(this, "Alert", Toast.LENGTH_LONG).show();
-			} else {
 				// Intent intent = new Intent(this, Synopsis.class);
 				// startActivity(intent);
 				TextView tv1 = (TextView) findViewById(R.id.tv1);
 				tv1.setText("");
 				tv2.setText("");
-				Stringg();
-			}
-			break;
+			break;*/
 		default:
 			Toast.makeText(this, "false", Toast.LENGTH_LONG).show();
 		}
@@ -112,6 +115,8 @@ public class MainActivity extends Activity implements OnClickListener {
 				// Get first title synopsis
 				Element description = doc.select("div.text").first();
 				desc = description.text();
+
+				// getting info for contents in the list view
 				Elements links = doc.select("a[href]");
 				for (Element link : links) {
 					if (link.attr("href").contains("contents/")) {
@@ -119,11 +124,16 @@ public class MainActivity extends Activity implements OnClickListener {
 					}
 				}
 				i = i / 2;
-
 				for (int a = i; a > 0; a--) {
 					Element tnames = doc.select("a.title").get(i - a);
 					lname = tnames.text();
-					st[i - a] = lname;
+					st[a - 1] = lname;
+					Element ttime = doc.select("span.time").get(i - a);
+					ltime = ttime.text();
+					time[a - 1] = ltime;
+					Element tchannel = doc.select("span.channel").get(i - a);
+					lchannel = tchannel.text();
+					channel[a - 1] = lchannel;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -134,12 +144,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		@Override
 		public void onPostExecute(Void result) {
 			pd.dismiss();
-			TextView tv1 = (TextView) findViewById(R.id.tv1);
+			/*TextView tv1 = (TextView) findViewById(R.id.tv1);
 			tv1.setTypeface(null, Typeface.BOLD);
 			tv1.setTextSize(20);
 			tv1.setText(name);
 			TextView tv2 = (TextView) findViewById(R.id.tv2);
-			tv2.setText(desc);
+			tv2.setText(desc);*/
+			Stringg();
+
 		}
 	}
 }
