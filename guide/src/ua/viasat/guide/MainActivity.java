@@ -34,6 +34,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static String[] channel = new String[150]; // array for channel
 	public static String[] synopsis = new String[150]; // array for synopsis
 	public static int clickID; // get clicked title id
+	public static String[] contentUrl;
+	public static String test;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +45,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		btn2.setOnClickListener(this);
 		Context dRequest = new Context();
 		dRequest.execute();
-		Stringg();
+		TVCreator();
 	}
 
-	public void Stringg() {
+	public void TVCreator() {
 		for (int a = i; a > 0; a--) {
 			RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
@@ -57,6 +59,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			tvd.setOnClickListener(this);
 			params.addRule(RelativeLayout.BELOW, tvd.getId() - 1);
 			rl.addView(tvd, params);
+			tvd.setText("");
 			tvd.setText(Html.fromHtml("<b>" + st[i - a] + "</b>" + "<br>"
 					+ time[i - a] + "   " + "<font color=\"grey\">"
 					+ channel[i - a] + "</font>" + "<br>"));
@@ -65,17 +68,14 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		Intent synIntent = new Intent(this, Synopsis.class);
-		Integer.toString(i);
-
-		clickID = v.getId() - 1;
-		switch (v.getId()) {
-		case R.id.btnRefresh:
+		if (v.getId() == R.id.btnRefresh) {
 			Context dRequest = new Context();
 			dRequest.execute();
-			break;
+		} else {
+			Intent synIntent = new Intent(this, Synopsis.class);
+			clickID = v.getId() - 1;
+			startActivity(synIntent);
 		}
-		startActivity(synIntent);
 	}
 
 	private class Context extends AsyncTask<Void, Void, Void> {
@@ -121,7 +121,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		@Override
 		public void onPostExecute(Void result) {
 			pd.dismiss();
-			Stringg();
+			TVCreator();
 		}
 	}
 }
