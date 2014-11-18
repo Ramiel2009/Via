@@ -23,9 +23,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	public static String name;
 	public static String lname;
-	public static String desc;
 	public static String ltime;
 	public static String lchannel;
+	public static String lsynopse;
 	public static String contUrl="http://ru.viasat.ua/";
 	ProgressDialog pd;
 	public static String title;
@@ -39,7 +39,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static String[] st = new String[150]; // array for titles name
 	public static String[] time = new String[150]; // array for time
 	public static String[] channel = new String[150]; // array for channel
-	public static int clicked; //get clicked title id
+	public static String[] synopse = new String [150]; // array for synopse
+	public static int clicked= 0; //get clicked title id
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		Intent synIntent = new Intent (this, Synopsis.class);
 		Integer.toString(i);
+		
+		//TODO FIX THIS SHIT!!!!
 		switch (v.getId()) {
 		case R.id.btn2:
 			Context dRequest = new Context();
@@ -96,17 +99,45 @@ public class MainActivity extends Activity implements OnClickListener {
 			System.out.println("1");
 			clicked = 0;
 			startActivity(synIntent);
-			
 			break;
 		case 2:
 			System.out.println("2");
 			clicked = 1;
 			startActivity(synIntent);
-			
 			break;
 		case 3:
 			System.out.println("3");
 			clicked = 2;
+			startActivity(synIntent);
+			break;
+		case 4:
+			System.out.println("1");
+			clicked = 3;
+			startActivity(synIntent);
+			break;
+		case 5:
+			System.out.println("2");
+			clicked = 4;
+			startActivity(synIntent);
+			break;
+		case 6:
+			System.out.println("3");
+			clicked = 5;
+			startActivity(synIntent);
+			break;
+		case 7:
+			System.out.println("1");
+			clicked = 6;
+			startActivity(synIntent);
+			break;
+		case 8:
+			System.out.println("2");
+			clicked = 7;
+			startActivity(synIntent);
+			break;
+		case 9:
+			System.out.println("3");
+			clicked = 8;
 			startActivity(synIntent);
 			break;
 		default:
@@ -120,7 +151,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		@Override
 		public void onPreExecute() {
 			pd = new ProgressDialog(MainActivity.this);
-			pd.setTitle("First Title");
+			pd.setTitle("Getting Data");
 			pd.setMessage("Loading...");
 			pd.show();
 		}
@@ -128,13 +159,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		public Void doInBackground(Void... params) {
 			try {
 				Document doc = Jsoup.connect(Url).timeout(60000).get();
-				// Get first title name
-				Element tName = doc.select("a.title").first();
-				name = tName.text();
-				// Get first title synopsis
-				Element description = doc.select("div.text").first();
-				desc = description.text();
-
 				// getting info for contents in the list view
 				Elements links = doc.select("a[href]");
 				for (Element link : links) {
@@ -153,6 +177,9 @@ public class MainActivity extends Activity implements OnClickListener {
 					Element tchannel = doc.select("span.channel").get(i - a);
 					lchannel = tchannel.text();
 					channel[a - 1] = lchannel;
+					Element tsynopse = doc.select("div.text").get(i - a);
+					lsynopse = tsynopse.text();
+					synopse [a-1]=lsynopse;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
