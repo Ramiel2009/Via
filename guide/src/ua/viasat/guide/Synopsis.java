@@ -5,23 +5,22 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class Synopsis extends Activity{
-	
-	public static String synopse;
-	
+public class Synopsis extends Activity {
+
+	public static String synopsis;
+
 	@Override
-	protected void onCreate (Bundle savedInstanceState){
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.synopsis);
-		TextView sname = (TextView)findViewById(R.id.sname);
+		TextView sname = (TextView) findViewById(R.id.sname);
 		sname.setTypeface(null, Typeface.BOLD);
-		TextView ssynopsis = (TextView)findViewById(R.id.ssyn);
+		TextView ssynopsis = (TextView) findViewById(R.id.ssyn);
 		sname.setText("");
-		//MainActivity.desc.replaceAll("\\bСмотреть на Viaplay!\\b", "");
 		ssynopsis.setText("");
-		int x = MainActivity.i-MainActivity.clicked-1;
+		int x = MainActivity.i - MainActivity.clickID - 1; // clicked TextView
 		
 		sname.setText(MainActivity.st[x]);
-		ssynopsis.setText(MainActivity.synopse[x]);
+		ssynopsis.setText(MainActivity.synopsis[x]);
 	}
 }

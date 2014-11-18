@@ -12,7 +12,7 @@
         android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn2"
+        android:layout_above="@+id/btnRefresh"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" >
@@ -42,20 +42,11 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btn2"
+        android:id="@+id/btnRefresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/scrollView1"
         android:layout_alignParentBottom="true"
         android:text="Refresh" />
-
-    <Button
-        android:id="@+id/btn1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/scrollView1"
-        android:layout_marginRight="23dp"
-        android:text="Get Titles List" />
 
 </RelativeLayout>
