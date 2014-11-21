@@ -2,7 +2,14 @@
 <resources>
 
     <string name="app_name">guide</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    
+    
+    <string-array name="views_array">
+        <item>Highlights</item>
+        <item>Channels</item>
+        <item>Favorites</item>
+    </string-array>
+    <string name="menu">Menu</string>
 </resources>
