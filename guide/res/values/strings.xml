@@ -11,5 +11,6 @@
         <item>Channels</item>
         <item>Favorites</item>
     </string-array>
+    <string name ="Refresh">Refresh</string>
     <string name="menu">Menu</string>
 </resources>
