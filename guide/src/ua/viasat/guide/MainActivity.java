@@ -5,16 +5,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import ua.viasat.guide.FirstFragment;
-import ua.viasat.guide.SecondFragment;
-import ua.viasat.guide.ThirdFragment;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -64,10 +62,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.main);
 		Button btn2 = (Button) findViewById(R.id.btnRefresh);
 		btn2.setOnClickListener(this);
-		//btn2.setVisibility(View.GONE);
 		Context dRequest = new Context();
 		dRequest.execute();
-		//TVCreator();
 
 		/////////NAVIGATION DRAWER//////////
 
@@ -85,7 +81,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		// enabling action bar app icon and behaving it as toggle button
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-
+		actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#3399FF")));
+		
 		myDrawerToggle = new ActionBarDrawerToggle(this, myDrawerLayout,
 				R.drawable.ic_drawer, // nav menu toggle icon
 				R.string.app_name, // nav drawer open - description for
@@ -132,7 +129,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
 		Button btn2 = (Button)findViewById(R.id.btnRefresh);
 		switch (position) {
-		case 0:
+		case 0:		
 			TVCreator();
 			rl.setVisibility(View.VISIBLE);
 			btn2.setVisibility(View.VISIBLE);
@@ -147,7 +144,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			rl.setVisibility(View.GONE);
 			btn2.setVisibility(View.GONE);
 			fragment = new ThirdFragment();
-
 			break;
 		default:
 			break;

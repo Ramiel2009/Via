@@ -31,27 +31,31 @@ public final class R {
         public static final int activity_vertical_margin=0x7f050001;
     }
     public static final class drawable {
-        public static final int ic_drawer=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int list_item_bg_normal=0x7f020002;
-        public static final int list_item_bg_pressed=0x7f020003;
-        public static final int list_selector=0x7f020004;
+        public static final int globe=0x7f020000;
+        public static final int ic_action_ic=0x7f020001;
+        public static final int ic_drawer=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int list_item_bg_normal=0x7f020004;
+        public static final int list_item_bg_pressed=0x7f020005;
+        public static final int list_selector=0x7f020006;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a000d;
-        public static final int btnRefresh=0x7f0a0008;
-        public static final int button1=0x7f0a0002;
-        public static final int checkBox1=0x7f0a0003;
-        public static final int content_frame=0x7f0a0005;
-        public static final int drawer_layout=0x7f0a0004;
+        public static final int action_settings=0x7f0a000f;
+        public static final int btnRefresh=0x7f0a000a;
+        public static final int btn_f2=0x7f0a0001;
+        public static final int button1=0x7f0a0004;
+        public static final int checkBox1=0x7f0a0005;
+        public static final int content_frame=0x7f0a0007;
+        public static final int drawer_layout=0x7f0a0006;
         public static final int label=0x7f0a0000;
-        public static final int lay=0x7f0a0006;
-        public static final int left_drawer=0x7f0a000a;
-        public static final int rl=0x7f0a0009;
-        public static final int scrollView1=0x7f0a0007;
-        public static final int sname=0x7f0a000b;
-        public static final int ssyn=0x7f0a000c;
-        public static final int textView1=0x7f0a0001;
+        public static final int lay=0x7f0a0008;
+        public static final int left_drawer=0x7f0a000c;
+        public static final int rl=0x7f0a000b;
+        public static final int scrollView1=0x7f0a0009;
+        public static final int sname=0x7f0a000d;
+        public static final int ssyn=0x7f0a000e;
+        public static final int textView1=0x7f0a0003;
+        public static final int tv_f2=0x7f0a0002;
     }
     public static final class layout {
         public static final int drawer_list_item=0x7f030000;
