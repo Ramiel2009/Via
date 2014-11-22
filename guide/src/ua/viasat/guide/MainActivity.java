@@ -55,6 +55,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private CharSequence myDrawerTitle; // navigation drawer title
 	private CharSequence myTitle;// used to store app title
 	private String[] viewsNames;
+	public static boolean flagRefreshed=false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +63,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.main);
 		Button btn2 = (Button) findViewById(R.id.btnRefresh);
 		btn2.setOnClickListener(this);
+		if(flagRefreshed==false){
 		Context dRequest = new Context();
 		dRequest.execute();
-
+		}
 		/////////NAVIGATION DRAWER//////////
 
 		myTitle = getTitle();
@@ -139,11 +141,13 @@ public class MainActivity extends Activity implements OnClickListener {
 			rl.setVisibility(View.GONE);
 			btn2.setVisibility(View.GONE);
 			fragment = new SecondFragment();
+			flagRefreshed=true;
 			break;
 		case 2:
 			rl.setVisibility(View.GONE);
 			btn2.setVisibility(View.GONE);
 			fragment = new ThirdFragment();
+			flagRefreshed=true;
 			break;
 		default:
 			break;
