@@ -99,12 +99,22 @@ public class Synopsis extends Activity {
 		public Void doInBackground(Void... params) {
 			try {
 					
-				TextView ss2 = (TextView) findViewById(R.id.ssyn);
+				
 					System.out.println(Parser.id.get(MainActivity.clickID - 1));
 					System.out.println(MainActivity.clickID - 1);					
 					text = (String) Parser.getItemInfo(Parser.id.get(MainActivity.clickID - 1)).get(0);
 					System.out.println(text);
-					ss2.setText(text+"");
+					
+					runOnUiThread(new Runnable() {
+					     @Override
+					     public void run() {
+
+					//stuff that updates ui
+					    	 TextView ssynopsis = (TextView) findViewById(R.id.ssyn);
+					    	 ssynopsis.setText(text+"");
+					    }
+					});
+					
 					
 								
 				
