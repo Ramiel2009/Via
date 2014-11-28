@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static String ltime;
 	public static String lchannel;
 	public static String lsynopse;
-	ProgressDialog pd; // Loading dialog
+	static ProgressDialog pd; // Loading dialog
 	static TextView tvd;
 	String Url = "http://ru.viasat.ua/contents";
 	public static int i; // titles counter
@@ -87,10 +87,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 		myDrawerToggle = new ActionBarDrawerToggle(this, myDrawerLayout,
 				R.drawable.ic_drawer, // nav menu toggle icon
-				R.string.app_name, // nav drawer open - description for
-									// accessibility
-				R.string.app_name // nav drawer close - description for
-									// accessibility
+				R.string.app_name,    // nav drawer open - description for
+								      // accessibility
+				R.string.app_name     // nav drawer close - description for 
+								      // accessibility
 		) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(myTitle);
@@ -225,7 +225,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	// NAVIGATION DRAWER
 
 	public void TVCreator() {
-		for (int a = i; a > 0; a--) {
+		for (int a = 1; a < Parser.title.size(); a++) {
 			RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 					ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -233,12 +233,12 @@ public class MainActivity extends Activity implements OnClickListener {
 			TextView tvd = new TextView(this);
 			tvd.setId(a);
 			tvd.setOnClickListener(this);
-			params.addRule(RelativeLayout.BELOW, tvd.getId() - 1);
+			params.addRule(RelativeLayout.BELOW, tvd.getId()-1);
 			rl.addView(tvd, params);
 			tvd.setText("");
-			tvd.setText(Html.fromHtml("<b>" + st[i - a] + "</b>" + "<br>"
-					+ time[i - a] + "   " + "<font color=\"grey\">"
-					+ channel[i - a] + "</font>" + "<br>"));
+			tvd.setText(Html.fromHtml("<b>" + Parser.title.get(a-1) + "</b>" + "<br>"
+					+ Parser.time.get(a-1) + "   " + "<font color=\"grey\">"
+					+ Parser.channel.get(a-1) + "</font>" + "<br>"));
 		}
 	}
 
@@ -249,7 +249,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			dRequest.execute();
 		} else {
 			Intent synIntent = new Intent(this, Synopsis.class);
-			clickID = v.getId() - 1;
+			clickID = v.getId();
 			startActivity(synIntent);
 		}
 	}
@@ -266,29 +266,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		public Void doInBackground(Void... params) {
 			try {
-				Document doc = Jsoup.connect(Url).timeout(60000).get();
-				Elements links = doc.select("a[href]");
-				for (Element link : links) {
-					if (link.attr("href").contains("contents/")) {
-						i++;
-					}
+				Parser.refrshItems();					
 				}
-				i = i / 2;
-				for (int a = i; a > 0; a--) {
-					Element tnames = doc.select("a.title").get(i - a);
-					lname = tnames.text();
-					st[a - 1] = lname;
-					Element ttime = doc.select("span.time").get(i - a);
-					ltime = ttime.text();
-					time[a - 1] = ltime;
-					Element tchannel = doc.select("span.channel").get(i - a);
-					lchannel = tchannel.text();
-					channel[a - 1] = lchannel;
-					Element tsynopse = doc.select("div.text").get(i - a);
-					lsynopse = tsynopse.text();
-					synopsis[a - 1] = lsynopse;
-				}
-			} catch (Exception e) {
+			 catch (Exception e) {
 				e.printStackTrace();
 			}
 			return null;
