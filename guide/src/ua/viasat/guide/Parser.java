@@ -14,6 +14,7 @@ public class Parser {
 	public static ArrayList<String> time = new ArrayList<String>();
 	public static ArrayList<String> channel = new ArrayList<String>();
 	public static ArrayList<String> title = new ArrayList<String>();
+	public static ArrayList<String> imageLinks = new ArrayList<String>();
 
 	public static ArrayList getItemInfo(String id) throws IOException {
 		String url = "http://ru.viasat.ua/contents/" + id;
@@ -30,8 +31,7 @@ public class Parser {
 		
 		ArrayList res = new ArrayList();
 		res.add(item.text().trim());
-		res.add("http://ru.viasat.ua" + imageLink);
-		
+		res.add("http://ru.viasat.ua" + imageLink);		
 		return res;
 	}
 	public static void refrshItems() throws IOException {
@@ -47,6 +47,7 @@ public class Parser {
 			title.add(e.getElementsByClass("title").text());
 			id.add(e.getElementsByClass("title").get(0).attr("href")
 					.replaceAll("/contents/", ""));
+			
 		}
 	}
 	

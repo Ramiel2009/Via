@@ -1,10 +1,6 @@
 package ua.viasat.guide;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -27,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,7 +45,6 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static String[] synopsis = new String[150]; // array for synopsis
 	public static int clickID; // get clicked title id
 	public static String[] contentUrl;
-
 	private DrawerLayout myDrawerLayout;
 	private ListView myDrawerList;
 	private ActionBarDrawerToggle myDrawerToggle;
@@ -76,7 +72,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		viewsNames = getResources().getStringArray(R.array.views_array);
 		myDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		myDrawerList = (ListView) findViewById(R.id.left_drawer);
-
 		myDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, viewsNames));
 
@@ -226,20 +221,51 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	public void TVCreator() {
 		for (int a = 1; a < Parser.title.size(); a++) {
+			
 			RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 					ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-			TextView tvd = new TextView(this);
-			tvd.setId(a);
-			tvd.setOnClickListener(this);
-			params.addRule(RelativeLayout.BELOW, tvd.getId()-1);
-			rl.addView(tvd, params);
+				ImageView iv = new ImageView(this);
+				
+				TextView tvd = new TextView(this);
+				tvd.setId(a);
+				iv.setId(a*2);
+				
+				tvd.setOnClickListener(this);
+				params.addRule(RelativeLayout.BELOW, a-1);
+				//params.addRule(RelativeLayout.RIGHT_OF, a*2);
+				rl.addView(tvd, params);
+				
+				 RelativeLayout.LayoutParams paramsiv = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+							ViewGroup.LayoutParams.WRAP_CONTENT);
+							 
+							 paramsiv.addRule(RelativeLayout.LEFT_OF, a);
+				iv.setOnClickListener(this);
+				iv.setBackgroundColor(Color.BLACK);
+				
+				ImageManager man = new ImageManager();
+				man.fetchImage(this, 3600, "http://www.viasat.ua/assets/photos/41669/present_viasat_2.png", iv);
+				rl.addView(iv, paramsiv);
+				
+				
+			    System.out.println(man.toString());
+			
+			
+
+					
+			
+			
+		
+			
+			
 			tvd.setText("");
-			tvd.setText(Html.fromHtml("<b>" + Parser.title.get(a-1) + "</b>" + "<br>"
+			tvd.setText(Html.fromHtml("<b>"+a+". " + Parser.title.get(a-1) + "</b>" + "<br>"
 					+ Parser.time.get(a-1) + "   " + "<font color=\"grey\">"
 					+ Parser.channel.get(a-1) + "</font>" + "<br>"));
+			
 		}
+		
 	}
 
 	@Override
